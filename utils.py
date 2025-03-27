@@ -57,6 +57,15 @@ def plot_waveform(trace, img_width=3, img_height=1, dpi=100):
 	plt.close(fig)  # Free memory
 	return img_arr
 
+
+def add_gaussian_noise(trace, noise_level_range=(0.001, 0.01)):  ## Adds Gaussian noise to a trace
+	"""Adds random Gaussian noise to a trace. Noise level is relative to trace std dev."""
+	trace_std = np.std(trace, axis=0)  ## Standard deviation per channel
+	noise_factor = np.random.uniform(*noise_level_range, size=trace.shape[1])  ## Random scale per channel
+	noise = np.random.randn(*trace.shape) * trace_std * noise_factor  ## Generate noise
+	noisy_trace = trace + noise  ## Add noise
+	return noisy_trace
+
 class DataPreprocessing:
 	"""Handles data preprocessing, including metadata reading, subsampling, and waveform loading."""
 	def __init__(self, subsample_size, raw_dataset_path, logs_path, noise_ratio, earthquake_ratio):
@@ -156,6 +165,10 @@ class DataPreprocessing:
 		waveform_imgs = np.zeros((len(self.subsample_traces), 100, 300, 3), dtype=np.uint8)
 		for i, (trace_name, trace) in enumerate(self.subsample_traces.items()):
 			try:
+				# Add Gaussian noise only to earthquake traces  ##
+				if self.subsample_metadata.loc[trace_name, "category"] == "earthquake":  ##
+					trace = add_gaussian_noise(trace)  ## Apply Gaussian noise
+
 				# Print trace statistics before plotting
 				print(f"Waveform Trace '{trace_name}': min={np.min(trace)}, max={np.max(trace)}, mean={np.mean(trace)}")
 
@@ -175,6 +188,10 @@ class DataPreprocessing:
 		spectrogram_imgs = np.zeros((len(self.subsample_traces), 200, 300, 3), dtype=np.uint8)
 		for i, (trace_name, trace) in enumerate(self.subsample_traces.items()):
 			try:
+				# Add Gaussian noise only to earthquake traces  ##
+				if self.subsample_metadata.loc[trace_name, "category"] == "earthquake":  ##
+					trace = add_gaussian_noise(trace)  ## Apply Gaussian noise
+
 				# Print trace statistics before plotting
 				print(f"Spectrogram Trace '{trace_name}': min={np.min(trace)}, max={np.max(trace)}, mean={np.mean(trace)}")
 
@@ -188,6 +205,7 @@ class DataPreprocessing:
 				gc.collect()
 
 		return spectrogram_imgs
+
 
 class SpectrogramDataset(Dataset):
 	def __init__(self, images, labels):
