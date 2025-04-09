@@ -27,4 +27,4 @@ Let `root` be a root directory of your choice.
 
 -> `models`
 
-where `chunk6.csv`, `chunk6.hdf5`, `chunk1.csv`, and `chunk1.hdf5` are downloaded from https://github.com/smousavi05/STEAD, and the directories not containing those files are empty. (Alternatively, to reproduce our results, download our dataset files.)
+where `chunk6.csv`, `chunk6.hdf5`, `chunk1.csv`, and `chunk1.hdf5` are downloaded from https://github.com/smousavi05/STEAD, and the directories not containing those files are empty. (Alternatively, to reproduce our results, download and place our dataset files `metadata_10000.feather`, `signals_10000.npy`, `spectrogram_images_10000.npy`, and `waveform_images_10000.npy` in `production`.)
