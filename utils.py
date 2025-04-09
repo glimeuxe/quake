@@ -4,11 +4,20 @@ import matplotlib.pyplot as plt
 import numpy as np
 import os
 import pandas as pd
-
 from PIL import Image
 from io import BytesIO
 from pathlib import Path
 from torch.utils.data import Dataset
+
+def seed_functions(seed):
+	"""Seeds functions from random, numpy, and torch."""
+	random.seed(SEED)
+	np.random.seed(SEED)
+	torch.manual_seed(SEED)
+	torch.cuda.manual_seed(SEED)
+	torch.cuda.manual_seed_all(SEED)
+	torch.backends.cudnn.benchmark = False
+	torch.backends.cudnn.deterministic = True
 
 def plot_spectrogram(trace, sampling_rate=100, img_width=3, img_height=2, dpi=100):
 	"""Generates a spectrogram image from a given trace signal with a fixed output size."""
@@ -205,7 +214,6 @@ class DataPreprocessing:
 				gc.collect()
 
 		return spectrogram_imgs
-
 
 class SpectrogramDataset(Dataset):
 	def __init__(self, images, labels):
