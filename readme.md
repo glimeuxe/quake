@@ -1,9 +1,14 @@
 Let `root` be a root directory of your choice.
 
-1. Download and place `main.ipynb` and `utils.py` in `root`.
-2. Ensure you have the following directories prepared in `root`:
+1. Ensure you have the following prepared.
 
 `.` (`root`)
+
+-> `main.ipynb`
+
+-> `utils.py`
+
+-> `architectures.py`
 
 -> `dataset`
 
