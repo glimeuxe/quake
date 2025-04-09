@@ -4,18 +4,18 @@ import matplotlib.pyplot as plt
 import numpy as np
 import os
 import pandas as pd
+import torch
 from PIL import Image
 from io import BytesIO
 from pathlib import Path
 from torch.utils.data import Dataset
 
 def seed_functions(seed):
-	"""Seeds functions from random, numpy, and torch."""
-	random.seed(SEED)
-	np.random.seed(SEED)
-	torch.manual_seed(SEED)
-	torch.cuda.manual_seed(SEED)
-	torch.cuda.manual_seed_all(SEED)
+	"""Seeds functions from numpy and torch."""
+	np.random.seed(seed)
+	torch.manual_seed(seed)
+	torch.cuda.manual_seed(seed)
+	torch.cuda.manual_seed_all(seed)
 	torch.backends.cudnn.benchmark = False
 	torch.backends.cudnn.deterministic = True
 
