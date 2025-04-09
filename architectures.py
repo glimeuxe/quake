@@ -6,7 +6,7 @@ from collections import deque
 from torchvision.models import mobilenet_v3_small
 
 # Imported nets
-class MobileNetV3Small_(nn.Module):
+class MNV3S(nn.Module):
 	def __init__(self):
 		super().__init__()
 		self.id = self.__class__.__name__
