@@ -4,8 +4,23 @@ import torch.nn as nn
 import torch.nn.functional as F
 from collections import deque
 from torchvision.models import mobilenet_v3_small
+from torchvision.models.vision_transformer import vit_b_16, ViT_B_16_Weights
 
 # Imported nets
+class ViTB16(nn.Module):
+	def __init__(self):
+		super().__init__()
+		self.id = self.__class__.__name__
+		self.expects224 = True
+		self.backbone = vit_b_16(weights=None)
+		self.backbone.heads = nn.Sequential(
+			nn.Linear(self.backbone.heads.head.in_features, 1),
+			nn.Sigmoid()
+		)
+
+	def forward(self, x):
+		return self.backbone(x)
+
 class MNV3S(nn.Module):
 	def __init__(self):
 		super().__init__()

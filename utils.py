@@ -5,10 +5,12 @@ import numpy as np
 import os
 import pandas as pd
 import torch
+import torchvision.transforms as transforms
 from PIL import Image
 from io import BytesIO
 from pathlib import Path
 from torch.utils.data import Dataset
+
 
 def seed_functions(seed):
 	"""Seeds functions from numpy and torch."""
@@ -65,7 +67,6 @@ def plot_waveform(trace, img_width=3, img_height=1, dpi=100):
 
 	plt.close(fig)  # Free memory
 	return img_arr
-
 
 def add_gaussian_noise(trace, noise_level_range=(0.001, 0.01)):  ## Adds Gaussian noise to a trace
 	"""Adds random Gaussian noise to a trace. Noise level is relative to trace std dev."""
@@ -225,3 +226,26 @@ class SpectrogramDataset(Dataset):
 
 	def __getitem__(self, i):
 		return self.images[i], self.labels[i]
+
+class SpectrogramDataset224(Dataset):
+	"""Wraps a SpectrogramDataset to resize images to 224x224."""
+	def __init__(self, base_dataset):
+		self.base_dataset = base_dataset
+		self.transform = transforms.Compose([
+			transforms.ToPILImage(),
+			transforms.Resize((224, 224)),
+			transforms.ToTensor()
+		])
+
+	def __len__(self):
+		return len(self.base_dataset)
+
+	def __getitem__(self, i):
+		image, label = self.base_dataset[i]
+		image = self.transform(image)
+		return image, label
+
+def compute_f1(tp, tn, fp, fn):
+	precision = tp / (tp + fp) if tp + fp else 0
+	recall = tp / (tp + fn) if tp + fn else 0
+	return 2 * precision * recall / (precision + recall) if precision + recall else 0
