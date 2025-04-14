@@ -1,12 +1,6 @@
-1. Prepare a root directory of your choice, `root`, as follows.
+1. Prepare an empty root directory of your choice, `root`, as follows.
 
 `.` (`root`)
-
--> `main.ipynb`
-
--> `utils.py`
-
--> `architectures.py`
 
 -> `dataset`
 
