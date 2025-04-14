@@ -1,0 +1,9 @@
+Pillow
+h5py
+matplotlib
+numpy
+pandas
+scikit-learn
+timm
+torch
+torchvision
