@@ -1,13 +1,33 @@
-# Quake
+# Project Name
 
-1. Prepare an empty root directory of your choice, `root`, as follows.
+## Setup
 
-`.` (`root`)
+1. Create a root directory (e.g. `root`) with this structure:
 
--> `dataset`
+```
+root/
+└── dataset/
+    └── production/
+```
 
---> `production`
+2. Place these files in `dataset/production/`:
+   - `metadata_10000.feather`
+   - `signals_10000.npy`
+   - `spectrogram_images_10000.npy`
+   - `waveform_images_10000.npy`
 
-2. Download and place `metadata_10000.feather`, `signals_10000.npy`, `spectrogram_images_10000.npy`, and `waveform_images_10000.npy` in `production`.
-3. Download and place `main.ipynb`, `utils.py`, and `architectures.py` in `root`.
-4. Ensure you have the packages in `requirements.txt` installed.
+3. Place these files in `root/`:
+   - `main.ipynb`
+   - `utils.py`
+   - `architectures.py`
+
+4. Install dependencies:
+
+```
+pip install -r requirements.txt
+```
+
+## Notes
+
+- Python ≥ 3.8 is recommended.
+- A download link for the data will be provided later.
