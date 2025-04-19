@@ -46,7 +46,7 @@ pip install -r requirements.txt
 ```
 
 6. Play with `main.ipynb`!
-7. Optionally, generate and download a raw spectrogram image by running `visualise_raw_data` in `main.ipynb` or from [Google Drive](https://drive.google.com/file/d/1cPLsMM9ucBGQMaqjy_Mw1ubo9vSX94RO/view) to play with the [GUI](https://huggingface.co/spaces/glimeuxe/quake)!
+7. Optionally, generate and download a raw spectrogram image by running `visualise_raw_data` in `main.ipynb` or from [Google Drive](https://drive.google.com/file/d/1cPLsMM9ucBGQMaqjy_Mw1ubo9vSX94RO/view) to upload to the [GUI](https://huggingface.co/spaces/glimeuxe/quake)!
 
 ## Notes
 
