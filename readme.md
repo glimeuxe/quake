@@ -22,3 +22,7 @@ root/
 ```
 pip install -r requirements.txt
 ```
+
+## Notes
+
+1. To select dataset processing method `n`, set `PROCESSING_METHOD` to `n`, where `n` is either `1` or `2`.
