@@ -2,7 +2,7 @@
 
 by Gregory Lim and Ryan Cheong
 
-[![GUI | active](https://img.shields.io/badge/GUI-active-blue)](https://huggingface.co/spaces/glimeuxe/quake)
+[![GUI | active](https://img.shields.io/badge/GUI-active-yellow)](https://huggingface.co/spaces/glimeuxe/quake)
 
 ## Setup
 
