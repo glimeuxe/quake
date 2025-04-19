@@ -50,8 +50,3 @@ pip install -r requirements.txt
 
 ## Notes
 1. To select dataset processing method `n`, set `PROCESSING_METHOD` to `n`, where `n` is either `1` or `2`.
-2. `preprocess_data` is what we used to generate the dataset files from the original Stanford EArthquake Dataset (STEAD). (This function need not run to reproduce our results.)
-3. `visualise_data` is what we use to plot annotated waveform and spectrogram images from the dataset files. (This function need not run to reproduce our results.)
-4. `visualise_raw_data` is what we use to plot a raw spectrogram image from the dataset files. (This function need not run to reproduce our results.)
-5. `split_data` is what we use to obtain index-label pairs needed to split the processed dataset.
-6. `load_data` is what we use to split the processed dataset, and load the splits into dataloaders for training a model.
