@@ -50,11 +50,12 @@ pip install -r requirements.txt
 
 ## Notes
 
-1. `main.ipynb` contains the main code. In this file, each function has a simple docstring describing what it does.
-2. `architectures.py` contains class definitions for architectures.
-3. `utils.py` contains utility functions.
-4. To train and evaluate a model defined by class `M`, do the following.
-    4.1. Select a dataset processing method by setting `PROCESSING_METHOD` to either `1` or `2`. Run the first cell.
-    4.2. Optionally, run the second cell to visualise annotated waveform and spectrogram images and/or a raw spectrogram image.
-    4.2. Replace `model` with an instance of `M` appropriately. Run the fourth, fifth, and sixth cells, in order.
-    4.3. Optionally, run the seventh cell to generate gradient-weighted class activation mapping (Grad-CAM) overlays for SCNNQ730.
+`main.ipynb` contains the main code. In this file, each function has a simple docstring describing what it does. `architectures.py` contains class definitions for architectures. `utils.py` contains utility functions. To train and evaluate a model defined by class `M`, do the following.
+
+1. Select a dataset processing method by setting `PROCESSING_METHOD` to either `1` or `2`. Run the first cell.
+
+2. Optionally, run the second cell to visualise annotated waveform and spectrogram images and/or a raw spectrogram image.
+
+3. Replace `model` with an instance of `M` appropriately. Run the fourth, fifth, and sixth cells, in order.
+
+4. Optionally, run the seventh cell to generate gradient-weighted class activation mapping (Grad-CAM) overlays for SCNNQ730.
