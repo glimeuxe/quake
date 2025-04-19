@@ -9,8 +9,8 @@ import torchvision.transforms as transforms
 from PIL import Image
 from io import BytesIO
 from pathlib import Path
+from scipy import signal
 from torch.utils.data import Dataset
-
 
 def seed_functions(seed):
 	"""Seeds functions from numpy and torch."""
@@ -175,17 +175,17 @@ class DataPreprocessing:
 		waveform_imgs = np.zeros((len(self.subsample_traces), 100, 300, 3), dtype=np.uint8)
 		for i, (trace_name, trace) in enumerate(self.subsample_traces.items()):
 			try:
-				# Add Gaussian noise only to earthquake traces  ##
-				if self.subsample_metadata.loc[trace_name, "category"] == "earthquake":  ##
-					trace = add_gaussian_noise(trace)  ## Apply Gaussian noise
+				# Add Gaussian noise only to earthquake traces
+				if self.subsample_metadata.loc[trace_name, "category"] == "earthquake":
+					trace = add_gaussian_noise(trace)
 
 				# Print trace statistics before plotting
 				print(f"Waveform Trace '{trace_name}': min={np.min(trace)}, max={np.max(trace)}, mean={np.mean(trace)}")
 
-				# Generate waveform image
-				waveform_imgs[i] = plot_waveform(trace[:, 2])  # Use the third channel
+				# Generate waveform image using the third channel
+				waveform_imgs[i] = plot_waveform(trace[:, 2])
 			except Exception as e:
-				print(f"Failed to process waveform '{trace_name}': {e}")  # Debugging output
+				print(f"Failed to process waveform '{trace_name}': {e}")
 
 			# Free memory periodically
 			if i % 100 == 0:
@@ -245,7 +245,73 @@ class SpectrogramDataset224(Dataset):
 		image = self.transform(image)
 		return image, label
 
-def compute_f1(tp, tn, fp, fn):
-	precision = tp / (tp + fp) if tp + fp else 0
-	recall = tp / (tp + fn) if tp + fn else 0
-	return 2 * precision * recall / (precision + recall) if precision + recall else 0
+def hilbert_transform_rolling_avg(raw_signal, resampled=True):
+	sos = signal.butter(4, (1,49.9), 'bandpass', fs=100, output='sos')  # Filter from 1-50 Hz, 4th order filter
+	filtered = signal.sosfilt(sos, raw_signal[:,2])  # Extract vertical component
+	analytic_signal =signal.hilbert(filtered)  # Apply Hilbert transform to get envelope
+	amplitude_envelope = np.abs(analytic_signal)  # Get only positive envelope
+	env_series = pd.Series(amplitude_envelope)  # Convert to a series to be compatible with pd.Series rolling mean calc
+	rolling_obj = env_series.rolling(200)  # 2-second rolling mean (100 Hz * 2 sec = 200 samples)
+	rolling_average = rolling_obj.mean()
+	rolling_average_demeaned = rolling_average[199:] - np.mean(rolling_average[199:])
+	rolling_average_padded = np.pad(
+		rolling_average_demeaned,
+		(199,0),
+		'constant',
+		constant_values=(list(rolling_average_demeaned)[0])
+	)  # Pad to remove NaNs created by rolling mean
+	if resampled:
+		return signal.resample(rolling_average_padded, 300)  # Resample from 6000 samples to 300
+	else:
+		return rolling_average_padded
+
+def multivisualise_training_loss(models):
+	plt.figure(figsize=(12, 6))
+	max_epochs = 0
+	for model in models:
+		model_folder = os.path.join(MODELS_PATH, f"{model.id}")
+		with open(os.path.join(model_folder, "losses.json"), "r") as f:
+			loss_data = json.load(f)
+		train_losses = loss_data["train_losses"]
+		epochs = range(1, len(train_losses) + 1)
+		plt.plot(epochs, train_losses, label=f"{model.id}")
+		max_epochs = max(max_epochs, len(train_losses))
+
+	plt.xlabel("Epoch")
+	plt.ylabel("Training loss")
+	plt.legend()
+	plt.xlim(1, max_epochs)
+	plt.gca().xaxis.set_major_locator(ticker.MultipleLocator(1))
+	plt.tight_layout()
+	plt.show()
+
+def multivisualise_validation_loss(models):
+	plt.figure(figsize=(12, 6))
+	max_epochs = 0
+	for model in models:
+		model_folder = os.path.join(MODELS_PATH, f"{model.id}")
+		with open(os.path.join(model_folder, "losses.json"), "r") as f:
+			loss_data = json.load(f)
+		dev_losses = loss_data["dev_losses"]
+		epochs = range(1, len(dev_losses) + 1)
+		plt.plot(epochs, dev_losses, label=f"{model.id}")
+		max_epochs = max(max_epochs, len(dev_losses))
+
+	plt.xlabel("Epoch")
+	plt.ylabel("Validation loss")
+	plt.legend()
+	plt.xlim(1, max_epochs)
+	plt.gca().xaxis.set_major_locator(ticker.MultipleLocator(1))
+	plt.tight_layout()
+	plt.show()
+
+def compute_macro_f1(tp, tn, fp, fn):
+	precision_pos = tp / (tp + fp) if tp + fp else 0
+	recall_pos = tp / (tp + fn) if tp + fn else 0
+	f1_pos = 2 * precision_pos * recall_pos / (precision_pos + recall_pos) if precision_pos + recall_pos else 0
+
+	precision_neg = tn / (tn + fn) if tn + fn else 0
+	recall_neg = tn / (tn + fp) if tn + fp else 0
+	f1_neg = 2 * precision_neg * recall_neg / (precision_neg + recall_neg) if precision_neg + recall_neg else 0
+
+	return (f1_pos + f1_neg) / 2

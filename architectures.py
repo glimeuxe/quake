@@ -5,10 +5,8 @@ import torch.nn as nn
 import torch.nn.functional as F
 from collections import deque
 from torchvision.models import mobilenet_v3_small
-from torchvision.models.vision_transformer import vit_b_16, ViT_B_16_Weights
-from neuralop.models import FNO
+from torchvision.models.vision_transformer import vit_b_16, ViT_B_16_Weights, vit_b_32
 
-# New units
 class SomnialUnit(nn.Module):
 	def __init__(self, in_channels, k=10):
 		super().__init__()
@@ -43,7 +41,6 @@ class SomnialUnit(nn.Module):
 		m = self.modulator(x_s_hat, x_t)
 		return m * x_s_hat + (1 - m) * x_t
 
-# Imported nets
 class SR50ViTB16(nn.Module):
 	def __init__(self):
 		super().__init__()
@@ -89,10 +86,21 @@ class R50ViTB16(nn.Module):
 
 	def forward(self, x):
 		x = self.backbone(x)
-
 		x = self.pool(x)
 		x = self.classifier(x)
 		return x
+
+class MNV3S(nn.Module):
+	def __init__(self):
+		super().__init__()
+		self.id = self.__class__.__name__
+		self.backbone = mobilenet_v3_small(weights=None)
+		self.backbone.classifier = nn.Sequential(
+			nn.Linear(self.backbone.classifier[0].in_features, 1),
+			nn.Sigmoid()
+		)
+	def forward(self, x):
+		return self.backbone(x)
 
 class R26ViTS32(nn.Module):
 	def __init__(self):
@@ -126,67 +134,21 @@ class ViTB16(nn.Module):
 	def forward(self, x):
 		return self.backbone(x)
 
-class MNV3S(nn.Module):
+class ViTB32(nn.Module):
 	def __init__(self):
 		super().__init__()
 		self.id = self.__class__.__name__
-		self.backbone = mobilenet_v3_small(weights=None)
-		self.backbone.classifier = nn.Sequential(
-			nn.Linear(self.backbone.classifier[0].in_features, 1),
+		self.expects224 = True
+		self.backbone = vit_b_32(weights=None)
+		self.backbone.heads = nn.Sequential(
+			nn.Linear(self.backbone.heads.head.in_features, 1),
 			nn.Sigmoid()
 		)
+
 	def forward(self, x):
 		return self.backbone(x)
 
-# Convolutional nets
-class CNNV1Q(nn.Module):
-	def __init__(self):
-		super().__init__()
-		self.id = self.__class__.__name__
-		self.conv1 = nn.Conv2d(3, 16, kernel_size=3, padding=1)
-		self.conv2 = nn.Conv2d(16, 32, kernel_size=3, padding=1)
-		self.conv3 = nn.Conv2d(32, 64, kernel_size=3, padding=1)
-		self.pool = nn.MaxPool2d(2, 2)
-		self.fc1 = nn.Linear(64 * 25 * 37, 128)  # 59200
-		self.fc2 = nn.Linear(128, 16)
-		self.fc3 = nn.Linear(16, 1)
-		self.dropout = nn.Dropout(0.25)
-
-	def forward(self, x):
-		x = self.pool(F.relu(self.conv1(x)))
-		x = self.pool(F.relu(self.conv2(x)))
-		x = self.pool(F.relu(self.conv3(x)))
-		x = torch.flatten(x, 1)
-		x = self.dropout(F.relu(self.fc1(x)))
-		x = self.dropout(F.relu(self.fc2(x)))
-		x = torch.sigmoid(self.fc3(x))
-		return x
-
-class CNNV1H(nn.Module):
-	def __init__(self):
-		super().__init__()
-		self.id = self.__class__.__name__
-		self.conv1 = nn.Conv2d(3, 16, kernel_size=3, padding=1)
-		self.conv2 = nn.Conv2d(16, 32, kernel_size=3, padding=1)
-		self.conv3 = nn.Conv2d(32, 64, kernel_size=3, padding=1)
-		self.pool = nn.MaxPool2d(2, 2)
-		self.fc1 = nn.Linear(64 * 25 * 37, 128)  # 59200
-		self.fc2 = nn.Linear(128, 16)
-		self.fc3 = nn.Linear(16, 1)
-		self.dropout = nn.Dropout(0.5)
-
-	def forward(self, x):
-		x = self.pool(F.relu(self.conv1(x)))
-		x = self.pool(F.relu(self.conv2(x)))
-		x = self.pool(F.relu(self.conv3(x)))
-		x = torch.flatten(x, 1)
-		x = self.dropout(F.relu(self.fc1(x)))
-		x = self.dropout(F.relu(self.fc2(x)))
-		x = torch.sigmoid(self.fc3(x))
-		return x
-
-# Somnial convolutional nets
-class SCNNV1Q(nn.Module):
+class SCNNQ730(nn.Module):
 	def __init__(self):
 		super().__init__()
 		self.id = self.__class__.__name__
@@ -196,8 +158,8 @@ class SCNNV1Q(nn.Module):
 		self.pool = nn.MaxPool2d(2, 2)
 		self.su = SomnialUnit(64, k=10)
 		self.fc1 = nn.Linear(64 * 25 * 37, 128)  # 59200
-		self.fc2 = nn.Linear(128, 16)
-		self.fc3 = nn.Linear(16, 1)
+		self.fc2 = nn.Linear(128, 8)
+		self.fc3 = nn.Linear(8, 1)
 		self.dropout = nn.Dropout(0.25)
 
 	def forward(self, x):
@@ -211,7 +173,7 @@ class SCNNV1Q(nn.Module):
 		x = torch.sigmoid(self.fc3(x))
 		return x
 
-class SCNNV1H(nn.Module):
+class CNNQ730(nn.Module):
 	def __init__(self):
 		super().__init__()
 		self.id = self.__class__.__name__
@@ -219,19 +181,85 @@ class SCNNV1H(nn.Module):
 		self.conv2 = nn.Conv2d(16, 32, kernel_size=3, padding=1)
 		self.conv3 = nn.Conv2d(32, 64, kernel_size=3, padding=1)
 		self.pool = nn.MaxPool2d(2, 2)
-		self.su = SomnialUnit(64, k=10)
 		self.fc1 = nn.Linear(64 * 25 * 37, 128)  # 59200
-		self.fc2 = nn.Linear(128, 16)
-		self.fc3 = nn.Linear(16, 1)
-		self.dropout = nn.Dropout(0.5)
+		self.fc2 = nn.Linear(128, 8)
+		self.fc3 = nn.Linear(8, 1)
+		self.dropout = nn.Dropout(0.25)
 
 	def forward(self, x):
 		x = self.pool(F.relu(self.conv1(x)))
 		x = self.pool(F.relu(self.conv2(x)))
 		x = self.pool(F.relu(self.conv3(x)))
-		x = self.su(x)
 		x = torch.flatten(x, 1)
 		x = self.dropout(F.relu(self.fc1(x)))
 		x = self.dropout(F.relu(self.fc2(x)))
 		x = torch.sigmoid(self.fc3(x))
+		return x
+
+class LSTMH(nn.Module):
+	def __init__(self):
+		super().__init__()
+		self.id = self.__class__.__name__
+		self.lstm = nn.LSTM(
+			input_size=1,
+			hidden_size=128,
+			num_layers=2,
+			batch_first=True,
+			bidirectional=False
+		)
+		self.dropout = nn.Dropout(0.5)
+		self.fc1 = nn.Linear(128, 64)
+		self.fc2 = nn.Linear(64, 1)
+
+	def forward(self, x):
+		output, (hn, cn) = self.lstm(x)
+		last_output = output[:, -1, :]
+		x = self.dropout(F.relu(self.fc1(last_output)))
+		x = torch.sigmoid(self.fc2(x))
+		return x
+
+class BiLSTMH(nn.Module):
+	def __init__(self):
+		super().__init__()
+		self.id = self.__class__.__name__
+		self.lstm = nn.LSTM(
+			input_size=1,
+			hidden_size=128,
+			num_layers=2,
+			batch_first=True,
+			bidirectional=True
+		)
+
+		self.dropout = nn.Dropout(0.5)
+		self.fc1 = nn.Linear(256, 128)
+		self.fc2 = nn.Linear(128, 1)
+
+	def forward(self, x):
+		output, (hn, cn) = self.lstm(x)
+		last_output = output[:, -1, :]
+		x = self.dropout(F.relu(self.fc1(last_output)))
+		x = torch.sigmoid(self.fc2(x))
+		return x
+
+class BiLSTMF(nn.Module):
+	def __init__(self):
+		super().__init__()
+		self.id = self.__class__.__name__
+		self.lstm = nn.LSTM(
+			input_size=1,
+			hidden_size=128,
+			num_layers=2,
+			batch_first=True,
+			bidirectional=True
+		)
+
+		self.dropout = nn.Dropout(0.2)
+		self.fc1 = nn.Linear(256, 128)
+		self.fc2 = nn.Linear(128, 1)
+
+	def forward(self, x):
+		output, (hn, cn) = self.lstm(x)
+		last_output = output[:, -1, :]
+		x = self.dropout(F.relu(self.fc1(last_output)))
+		x = torch.sigmoid(self.fc2(x))
 		return x
