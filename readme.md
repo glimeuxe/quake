@@ -2,7 +2,7 @@
 
 by Gregory Lim and Ryan Cheong
 
-![GUI](https://huggingface.co/spaces/glimeuxe/quake)
+![GUI](https://img.shields.io/website?url=https%3A%2F%2Fhuggingface.co%2Fspaces%2Fglimeuxe%2Fquake)
 
 ## Setup
 
