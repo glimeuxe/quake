@@ -3,7 +3,6 @@
 by Gregory Lim and Ryan Cheong
 
 [![Dataset | available](https://img.shields.io/badge/Dataset-active-red)](https://drive.google.com/file/d/1ln0j21XmYO9onMP6qsE-wtxhP-k7X2w3/view)
-|
 [![GUI | active](https://img.shields.io/badge/GUI-active-green)](https://huggingface.co/spaces/glimeuxe/quake)
 
 ## Setup
@@ -25,7 +24,8 @@ root/
 pip install -r requirements.txt
 ```
 
-6. Have fun with `main.ipynb` or the the [GUI](https://huggingface.co/spaces/glimeuxe/quake)
+6. Play with `main.ipynb`!
+7. Optionally, generate and download a raw spectrogram image by running `visualise_raw_data` in `main.ipynb` or from [Google Drive](https://drive.google.com/file/d/1cPLsMM9ucBGQMaqjy_Mw1ubo9vSX94RO/view) to play with the [GUI](https://huggingface.co/spaces/glimeuxe/quake)!
 
 ## Notes
 
