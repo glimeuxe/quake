@@ -1,6 +1,6 @@
 # Quake
 
-by Group 37
+by Gregory Lim and Ryan Cheong (Group 37)
 
 [![Dataset | available](https://img.shields.io/badge/Dataset-available-red)](https://drive.google.com/file/d/1ln0j21XmYO9onMP6qsE-wtxhP-k7X2w3/view)
 [![Models | available](https://img.shields.io/badge/Models-available-red)](https://huggingface.co/spaces/glimeuxe/quake/tree/main/models)
@@ -10,7 +10,7 @@ by Group 37
 
 1. Clone this repository into a root directory (hereafter, `root`) of your choice.
 2. Download the dataset files from [Google Drive](https://drive.google.com/file/d/1ln0j21XmYO9onMP6qsE-wtxhP-k7X2w3/view).
-3. Download the model directories from [Hugging Face](https://huggingface.co/spaces/glimeuxe/quake/tree/main/models).
+3. Download the model directories from [Google Drive](https://drive.google.com/drive/folders/1EBu7DWj03SBB7mmRyOKhC_xpyPgcauYf) or [Hugging Face](https://huggingface.co/spaces/glimeuxe/quake/tree/main/models).
 4. Create (empty) directories in `root` as follows.
 
 ```
