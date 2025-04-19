@@ -2,7 +2,9 @@
 
 by Gregory Lim and Ryan Cheong
 
-[![GUI | active](https://img.shields.io/badge/GUI-active-yellow)](https://huggingface.co/spaces/glimeuxe/quake)
+[![Dataset | available](https://img.shields.io/badge/GUI-active-red)](https://drive.google.com/file/d/1ln0j21XmYO9onMP6qsE-wtxhP-k7X2w3/view)
+|
+[![GUI | active](https://img.shields.io/badge/GUI-active-green)](https://huggingface.co/spaces/glimeuxe/quake)
 
 ## Setup
 
@@ -22,6 +24,8 @@ root/
 ```
 pip install -r requirements.txt
 ```
+
+6. Have fun with `main.ipynb` or the the [GUI](https://huggingface.co/spaces/glimeuxe/quake)
 
 ## Notes
 
