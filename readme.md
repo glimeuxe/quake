@@ -1,6 +1,6 @@
 # Quake
 
-(by Group 37)
+by Group 37
 
 [![Dataset | available](https://img.shields.io/badge/Dataset-available-red)](https://drive.google.com/file/d/1ln0j21XmYO9onMP6qsE-wtxhP-k7X2w3/view)
 [![Models | available](https://img.shields.io/badge/Models-available-red)](https://huggingface.co/spaces/glimeuxe/quake/tree/main/models)
