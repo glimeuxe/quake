@@ -6,6 +6,7 @@ import os
 import pandas as pd
 import torch
 import torchvision.transforms as transforms
+from architectures import *
 from PIL import Image
 from io import BytesIO
 from pathlib import Path
