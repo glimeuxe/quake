@@ -49,8 +49,9 @@ pip install -r requirements.txt
 7. Optionally, generate and download a raw spectrogram image by running `visualise_raw_data` in `main.ipynb` or from [Google Drive](https://drive.google.com/file/d/1cPLsMM9ucBGQMaqjy_Mw1ubo9vSX94RO/view) to upload to the [GUI](https://huggingface.co/spaces/glimeuxe/quake)!
 
 ## Notes
-
-1. `preprocess_data` is what we use to generate the dataset files from the original Stanford EArthquake Dataset (STEAD). This function need not run to reproduce our results.
-2. `visualise_data` is what we use to plot annotated waveform and spectrogram images from the dataset files. This function need not run to reproduce our results.
-
 1. To select dataset processing method `n`, set `PROCESSING_METHOD` to `n`, where `n` is either `1` or `2`.
+2. `preprocess_data` is what we used to generate the dataset files from the original Stanford EArthquake Dataset (STEAD). (This function need not run to reproduce our results.)
+3. `visualise_data` is what we use to plot annotated waveform and spectrogram images from the dataset files. (This function need not run to reproduce our results.)
+4. `visualise_raw_data` is what we use to plot a raw spectrogram image from the dataset files. (This function need not run to reproduce our results.)
+5. `split_data` is what we use to obtain index-label pairs needed to split the processed dataset.
+6. `load_data` is what we use to split the processed dataset, and load the splits into dataloaders for training a model.
