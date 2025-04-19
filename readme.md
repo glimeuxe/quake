@@ -8,7 +8,7 @@
 
 1. Clone this repository into a root directory (hereafter, `root`) of your choice.
 2. Download the dataset files from [Google Drive](https://drive.google.com/file/d/1ln0j21XmYO9onMP6qsE-wtxhP-k7X2w3/view).
-3. Download the model directories from [Hugging Face](https://huggingface.co/spaces/glimeuxe/quake/tree/main/models)
+3. Download the model directories from [Hugging Face](https://huggingface.co/spaces/glimeuxe/quake/tree/main/models).
 4. Create (empty) directories in `root` as follows.
 
 ```
