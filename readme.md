@@ -2,7 +2,7 @@
 
 by Gregory Lim and Ryan Cheong
 
-[![Dataset | available](https://img.shields.io/badge/Dataset-active-red)](https://drive.google.com/file/d/1ln0j21XmYO9onMP6qsE-wtxhP-k7X2w3/view)
+[![Dataset | available](https://img.shields.io/badge/Dataset-available-red)](https://drive.google.com/file/d/1ln0j21XmYO9onMP6qsE-wtxhP-k7X2w3/view)
 [![GUI | active](https://img.shields.io/badge/GUI-active-green)](https://huggingface.co/spaces/glimeuxe/quake)
 
 ## Setup
