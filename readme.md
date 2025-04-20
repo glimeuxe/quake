@@ -1,6 +1,6 @@
 # Quake
 
-_Made by 2 guys: Gregory Lim and Ryan Cheong. If an issue (e.g. typo) is found, please make a pull request._
+_A project by Gregory Lim and Ryan Cheong. If an issue (e.g. typo) is found, please make a pull request._
 
 [![Dataset | available](https://img.shields.io/badge/Dataset-available-red)](https://drive.google.com/file/d/1ln0j21XmYO9onMP6qsE-wtxhP-k7X2w3/view)
 [![Models | available](https://img.shields.io/badge/Models-available-red)](https://huggingface.co/spaces/glimeuxe/quake/tree/main/models)
