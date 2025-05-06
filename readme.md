@@ -1,14 +1,12 @@
 # Quake
 
-[![Dataset | available](https://img.shields.io/badge/Dataset-available-red)](https://drive.google.com/file/d/1ln0j21XmYO9onMP6qsE-wtxhP-k7X2w3/view)
-[![Models | available](https://img.shields.io/badge/Models-available-red)](https://huggingface.co/spaces/glimeuxe/quake/tree/main/models)
-[![GUI | active](https://img.shields.io/badge/GUI-active-blue)](https://huggingface.co/spaces/glimeuxe/quake)
+[![GUI | inactive](https://img.shields.io/badge/GUI-active-blue)](https://huggingface.co/spaces/glimeuxe/quake)
 
 ## Setup
 
 1. Clone this repository into a root directory (hereafter, `root`) of your choice.
-2. Download the dataset files from [Google Drive](https://drive.google.com/file/d/1ln0j21XmYO9onMP6qsE-wtxhP-k7X2w3/view).
-3. Download the model directories from [Hugging Face](https://huggingface.co/spaces/glimeuxe/quake/tree/main/models) or [Google Drive](https://drive.google.com/drive/folders/1EBu7DWj03SBB7mmRyOKhC_xpyPgcauYf).
+2. Download the dataset files from [Hugging Face](https://huggingface.co/datasets/glimeuxe/quake).
+3. Download the model directories from [Hugging Face](https://huggingface.co/glimeuxe/quake).
 4. Create (empty) directories in `root` as follows.
 
 ```
@@ -46,7 +44,7 @@ pip install -r requirements.txt
 ```
 
 6. Play with `main.ipynb`!
-7. Optionally, generate and download a raw spectrogram image by running `visualise_raw_data` in `main.ipynb` or from [Google Drive](https://drive.google.com/file/d/1cPLsMM9ucBGQMaqjy_Mw1ubo9vSX94RO/view) to upload to the [GUI](https://huggingface.co/spaces/glimeuxe/quake)!
+7. Optionally, generate and download a raw spectrogram image by running `visualise_raw_data` in `main.ipynb` to upload to the GUI!
 
 ## Notes
 
